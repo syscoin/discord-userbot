@@ -14,7 +14,10 @@ In config.json:
 
 | Property | Description | Default Value |
 | - | - | - |
-
+| `token` | Discord bot token | n/a |
+| `prefix` | Discord bot command prefix | userbot |
+| `default_channel_name` | Channel bot sends messages to when users are kicked | general |
+| `check_time_ms` | Interval for imposter checks | 180000
 
 ## Whitelist config
 In whitelist.json, the format is:
