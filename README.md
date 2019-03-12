@@ -42,3 +42,8 @@ For example:
 `
 
 The whitelist can contain any number of server ids, and any number of aliases per-id. Alias checking is done using substring matching and diacritic-removal by default.
+
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
