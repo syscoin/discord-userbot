@@ -1,0 +1,8 @@
+{
+  "token"  : "YOUR TOKEN HERE",
+  "prefix" : "userbot",
+  "default_channel_name": "general",
+  "check_time_ms": 180000,
+  "kickuser_dm_msg": "You've been kicked because you're username conflicts with the username a moderator on this channel. To avoid confusion \n and scams we do not allow usernames that conflict with moderator usernames. Please change your username in order to rejoin.\n If you feel this was an error please direct message {USER}",
+  "kickuser_channel_msg": "${kickUsername} (${kickServerId}) has been kicked by USERBOT for impersonation of an admin/mod.\n The real ${realUsername} is serverID ${realServerId}."
+}
