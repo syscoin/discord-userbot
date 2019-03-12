@@ -1,6 +1,4 @@
-![Image of Userbot](https://i.imgur.com/Qjlpot6.png)
-
-# Userbot
+# Userbot ![Image of Userbot](https://i.imgur.com/Qjlpot6.png)
 > A discord chat bot for preventing username impersonation, duplication and fraud.
 
 ## Install and Run
