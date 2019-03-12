@@ -3,6 +3,7 @@ const client = new Discord.Client();
 const render = require('es6-template-render');
 
 const config = require("./config.json");
+const whitelist = require("./whitelist.json");
 const utils = require("./utils");
 
 let currentGuild,
@@ -50,48 +51,47 @@ const kickUser = async (member, guild, realUsername, realServerId) => {
   let channel = guild.channels.find(channel => channel.name === config.default_channel_name);
 
   if(!member)
-    return channel.send("Please mention a valid user of this server");
-
-  if(!member.kickable)
-    return channel.send("I cannot kick this user! Do they have a higher role? Do I have kick permissions?");
+    return console.log(`Please mention a valid user of this server.`);
 
   const kickReason = config.kickuser_dm_msg;
 
-  /*await member.kick(reason)
-    .catch(error => channel.send(`Sorry ${message.author} I couldn't kick because of : ${error}`));*/
+  await member.kick(kickReason)
+    .catch(error => {
+      console.log(`ERROR: I cannot kick user: ${member.user.username} | ${member.user.id} | real: ${realServerId} ! Do they have a higher role? Do I have kick permissions?`);
+      //channel.send(`Sorry ${message.author} I couldn't kick because of : ${error}`);
+    });
 
-  //member.send(kickReason);
-  //channel.send(render(config.kickuser_channel_msg, { kickUsername: member.user.tag, kickServerId: member.id, realUsername, realServerId}));
+  member.send(kickReason);
+  channel.send(render(config.kickuser_channel_msg, { kickUsername: member.user.tag, kickServerId: member.id, realUsername, realServerId}));
 };
 
 const checkForImposters = (client) => {
   console.log("checking for imposters!");
 
   client.users.forEach(async (user) => {
-    console.log(user.username + ' ' + user.id);
+    //console.log(user.username + ' ' + user.id);
     let isImposter = false;
     let matchingUser;
 
-    for(let serverID in config.whitelist) {
-      let aliasList = config.whitelist[serverID];
+    for(let serverId in whitelist) {
+      let aliasList = whitelist[serverId];
       for (let i = 0; i < aliasList.length; i++) {
-        if (utils.removeDiacritics(aliasList[i].toLowerCase()).indexOf(utils.removeDiacritics(user.username.toLowerCase())) > -1 && serverID !== user.id) {
-          console.log("IMPOSTER FOUND! ", user.username, user.id);
+        if (user.username.length >= aliasList[i].length &&
+            utils.removeDiacritics(aliasList[i].toLowerCase()).indexOf(utils.removeDiacritics(user.username.toLowerCase())) > -1 &&
+            serverId !== user.id) {
+          console.log("IMPOSTER FOUND! ", user.username, user.id, "real is ", serverId);
           isImposter = true;
-          matchingUser = { username: aliasList[0], id: serverID };
+          matchingUser = { username: aliasList[0], id: serverId };
           break;
         }
       }
     }
 
     if(isImposter) {
-      console.log("Kicking imposter: ", matchingUser.username);
+      console.log("Kicking imposter: ", user.username, ' impersonating ', matchingUser.username);
 
       let member = currentGuild.members.get(user.id);
-      console.log("MEMBER ID", member.id, "SERVER ID", matchingUser.id);
-      await kickUser(member, currentGuild, user.username, matchingUser.username, matchingUser.id);
+      await kickUser(member, currentGuild, matchingUser.username, matchingUser.id);
     }
-
-
   });
 };
