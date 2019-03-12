@@ -1,4 +1,4 @@
-![Image of Userbot](https://i.imgur.com/Qjlpot6.png =100x100) 
+<img src="https://i.imgur.com/Qjlpot6.png" width="100"/>
 # Userbot 
 > A discord chat bot for preventing username impersonation, duplication and fraud.
 
