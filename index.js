@@ -42,6 +42,8 @@ client.on("message", async message => {
   }
 });
 
+client.on('error', console.error);
+
 client.login(config.token);
 
 /*
